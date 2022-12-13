@@ -1,0 +1,84 @@
+Reocil
+
+redux = (x)
+
+React 전용 라이브러리 2020년5월, Facebook에서 출시
+React Hooks 기반으로 React에 최적화
+
+그러나, Redux는 Fackbook에서 고안한 flux패턴을 기반으로 설계되었기 때문에
+안정적인 전역상태관리가 가능했다. Redux도 충분히 훌륭한 전역 상태 관리 라이브러리.
+
+문제점!
+redux 프론트 엔드 개발자들이 뽑은 3년 안에 가장 빨리 망할 것 같은 라이브러리 1위 등재
+
+1. React 전용 라이브러리가 아님
+2. 복잡한 보일러 플레이트(초기세팅)
+3. 비동기 데이터에 대한 추가 미들웨어 설치
+
+이러한 단점들을 보완해서 보다 React 스러운 전역상태 관리 라이브러리를 만들어보지
+
+ex) 
+*atom = 상태 관리 최소 단위
+ recoil은 해당 atom을 구독하면서 전역상태관리가 가능한 것
+
+const [state, setState] = useRecoilState(atom명); --[값, 설정함수]
+const state = useRecoilValue(atom명); -- 값
+const setState = useSetReocilState(atom명); -- 설정 함수
+const reset = useResetRecoilState(atom명); -- 초기화
+
+* selector
+다른 atom 혹은 selecot의 상태를 입력받아 파생된 데이터를 반환하는 순수함수
+react-qurey로 대채하고 있지만 redux와 달리 selector를 활용하면 비동기 함수 처리
+
+
+게시글목록 [다양한 게시글]
+게시글 중에 id값을 전달받아 특정한 게시글만 가지고와라
+
+const popstListSelectore = selector({
+    key: 'postList',
+    get: async ( { get } ) => {
+        const id = get(foucAtom).id;
+        const allPosts = get(PostListAtom);
+        cosnt post = allPosts.find((item)=> item.id === id);
+        return post;
+    }
+})
+
+
+----------------------------------------------------------------------
+
+React_qurey
+
+전역 상태 관리(클라이언트 state)
+Redux를 활용한 APi 요청과 비동기  데이터 관리의 불편함을 해소하기 위해 등장
+* 서버의 상태를 관리 캐싱하며, 지속적으로 동기화하고 업데이트하는 작업을 도와주는 라이브러리 *
+
+staleTime
+(신선하지않은 시간) = 유효기간 = 최신화가 필요하다
+데이터가 불러와졌으면 시간이 감
+* stale 상태가 되면 refetch 시도
+
+
+cacheTime
+(저장)
+서버의 데이터가 cacheTime이 활성화된 동안은 캐싱된 상태로 남아있는 시간
+데이터를 활용하기 시작한 순가부터 시간이 감
+cacheTime이 지나면 staleTime과 관계없이 가비지 컬렉터로 수집
+
+
+* 내가 원할 때 데이터를 다시 refetch *
+refetch
+useQueryClient
+retry
+
+
+----------------------------------------------------------------------
+
+// p.s 리엑트의 다음 세대
+- Svelte - 2016 (javascript와 유사, 100곳 중에 1곳은 입사 조건)
+- qwick ( Angular, Electron ) - 2022
+
+개발은
+" 개발 3년 프로그래밍 3년 파워포인트 3년 "
+
+----------------------------------------------------------------------
